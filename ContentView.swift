@@ -3,6 +3,7 @@ import SwiftUI
 struct DayDreamerView: View {
     @State private var selectedDate: Date = Date() // Default to current date and time
     @State private var timeMessage: String = "" // To display the countdown or time since
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect() // Timer to update every second
 
     var body: some View {
         NavigationView {
@@ -22,6 +23,9 @@ struct DayDreamerView: View {
                     .padding()
             }
             .navigationTitle("Day Dreamer")
+            .onReceive(timer) { input in
+                calculateDifference() // Update timeMessage every second
+            }
         }
     }
 
