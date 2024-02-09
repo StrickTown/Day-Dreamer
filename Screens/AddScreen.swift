@@ -6,6 +6,9 @@ struct AddScreen: View {
     @State private var showTimeDetails: Bool = false // Toggle state for showing or hiding time details
     @State private var showWeeksDetails: Bool = false // Toggle state for showing or hiding week details
     
+    // Timer to update the view every second
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         VStack {
             Toggle(isOn: $showTimeDetails) {
@@ -30,6 +33,9 @@ struct AddScreen: View {
                 .padding()
         }
         .onAppear(perform: calculateDifference)
+        .onReceive(timer) { _ in
+            calculateDifference() // Recalculate difference every second
+        }
     }
     
     func calculateDifference() {
@@ -53,7 +59,6 @@ struct AddScreen: View {
         if let month = difference.month, month != 0 { message += "\(abs(month)) months, " }
         if let week = difference.weekOfYear, showWeeksDetails { message += "\(abs(week)) weeks, " }
         
-        // Calculate days accurately considering weeks if needed
         if let day = difference.day {
             if showWeeksDetails {
                 let daysWithoutWeeks = abs(day) % 7
