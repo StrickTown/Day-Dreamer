@@ -11,7 +11,7 @@ import SwiftUI
 struct Day_DreamerApp: App {
     var body: some Scene {
         WindowGroup {
-            DayDreamerView()
+            ContentView()
         }
     }
 }
