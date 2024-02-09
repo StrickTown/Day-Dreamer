@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Home: View {
+struct TabHome: View {
     /// View Properties
     @State private var activeTab: Tab = .home
     /// For Smooth Shape Sliding Effect, We're going to use Matched Geometry Effect
@@ -20,7 +20,7 @@ struct Home: View {
     var body: some View {
         VStack(spacing: 0) {
             TabView(selection: $activeTab) {
-                Text("Home")
+                HomeScreen()
                     .tag(Tab.home)
                     /// Hiding Native Tab Bar
                     /// Bug on iOS 16.4
@@ -52,6 +52,7 @@ struct Home: View {
             }
             
             CustomTabBar()
+                .padding(.top, -25)
         }
     }
     
@@ -76,7 +77,7 @@ struct Home: View {
         .padding(.vertical, 10)
         .background(content: {
             TabShape(midpoint: tabShapePosition.x)
-                .fill(.white)
+                .fill(Color("PrimaryBackground"))
                 .ignoresSafeArea()
                 /// Adding Blur + Shadow
                 /// For Shape Smoothening
@@ -141,6 +142,6 @@ struct TabItem: View {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        Home()
+        TabHome()
     }
 }
