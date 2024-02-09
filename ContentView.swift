@@ -4,6 +4,7 @@ struct DayDreamerView: View {
     @State private var selectedDate: Date = Date() // Default to current date and time
     @State private var timeMessage: String = "" // To display the countdown or time since
     @State private var showTimeDetails: Bool = false // Toggle state for showing or hiding time details
+    @State private var showWeeksDetails: Bool = false // Toggle state for showing or hiding week details
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect() // Timer to update every second
 
@@ -14,12 +15,11 @@ struct DayDreamerView: View {
                     Text("Show Hours and Minutes")
                 }
                 .padding()
-                .onChange(of: showTimeDetails) { newValue in
-                    if !newValue {
-                        // If toggle is off, reset hours and minutes to midnight
-                        resetTimeToMidnight()
-                    }
+
+                Toggle(isOn: $showWeeksDetails) {
+                    Text("Show Weeks")
                 }
+                .padding()
 
                 DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: showTimeDetails ? [.date, .hourAndMinute] : [.date])
                     .padding()
@@ -41,56 +41,35 @@ struct DayDreamerView: View {
 
     func calculateDifference() {
         let calendar = Calendar.current
-
-        // Adjust both currentDate and selectedDate to midnight if showTimeDetails is false
-        let currentDateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
-        var currentDateAtMidnight = calendar.date(from: currentDateComponents)!
-        
+        var currentDateAtMidnight = calendar.startOfDay(for: Date())
         var selectedDateAtMidnight = selectedDate
+        
         if !showTimeDetails {
-            if let midnight = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: selectedDate) {
-                selectedDateAtMidnight = midnight
-            }
-            // Also adjust the current date to midnight for a fair comparison
-            currentDateAtMidnight = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
+            selectedDateAtMidnight = calendar.startOfDay(for: selectedDate)
         }
         
-        let difference = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: currentDateAtMidnight, to: selectedDateAtMidnight)
+        let differenceComponents: Set<Calendar.Component> = showWeeksDetails ? [.year, .month, .weekOfYear, .day, .hour, .minute, .second] : [.year, .month, .day, .hour, .minute, .second]
+        let difference = calendar.dateComponents(differenceComponents, from: currentDateAtMidnight, to: selectedDateAtMidnight)
         
-        if selectedDateAtMidnight > currentDateAtMidnight {
-            // Future date
-            let days = difference.day ?? 0
-            let hours = difference.hour ?? 0
-            let minutes = difference.minute ?? 0
-            let seconds = difference.second ?? 0
-            
-            if showTimeDetails {
-                timeMessage = "Time until selected date: \(difference.year ?? 0) years, \(difference.month ?? 0) months, \(days) days, \(hours) hours, \(minutes) minutes, \(seconds) seconds."
-            } else {
-                timeMessage = "Time until selected date: \(difference.year ?? 0) years, \(difference.month ?? 0) months, \(days) days."
-            }
-        } else {
-            // Past date
-            let days = abs(difference.day ?? 0)
+        var message = selectedDateAtMidnight > currentDateAtMidnight ? "Time until selected date: " : "Time since selected date: "
+        message += "\(abs(difference.year ?? 0)) years, \(abs(difference.month ?? 0)) months"
+        
+        if showWeeksDetails {
+            let weeks = abs(difference.weekOfYear ?? 0)
+            message += ", \(weeks) weeks"
+        }
+        
+        let days = abs(difference.day ?? 0)
+        message += ", \(days) days"
+        
+        if showTimeDetails {
             let hours = abs(difference.hour ?? 0)
             let minutes = abs(difference.minute ?? 0)
             let seconds = abs(difference.second ?? 0)
-            
-            if showTimeDetails {
-                timeMessage = "Time since selected date: \(abs(difference.year ?? 0)) years, \(abs(difference.month ?? 0)) months, \(days) days, \(hours) hours, \(minutes) minutes, \(seconds) seconds."
-            } else {
-                timeMessage = "Time since selected date: \(abs(difference.year ?? 0)) years, \(abs(difference.month ?? 0)) months, \(days) days."
-            }
+            message += ", \(hours) hours, \(minutes) minutes, \(seconds) seconds."
         }
-    }
-
-
-    func resetTimeToMidnight() {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day], from: selectedDate)
-        if let newDate = calendar.date(from: components) {
-            selectedDate = newDate
-        }
+        
+        timeMessage = message
     }
 }
 
