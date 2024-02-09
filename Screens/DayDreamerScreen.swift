@@ -1,44 +1,46 @@
 import SwiftUI
 
-struct DayDreamerView: View {
+struct DayDreamerScreen: View {
     @State private var selectedDate: Date = Date() // Default to current date and time
     @State private var timeMessage: String = "" // To display the countdown or time since
     @State private var showTimeDetails: Bool = false // Toggle state for showing or hiding time details
     @State private var showWeeksDetails: Bool = false // Toggle state for showing or hiding week details
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect() // Timer to update every second
-
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                Toggle(isOn: $showTimeDetails) {
-                    Text("Show Hours and Minutes")
-                }
-                .padding()
-
-                Toggle(isOn: $showWeeksDetails) {
-                    Text("Show Weeks")
-                }
-                .padding()
-
-                DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: showTimeDetails ? [.date, .hourAndMinute] : [.date])
+        Color("PrimaryBackground")
+            .edgesIgnoringSafeArea(.all)
+            .overlay(
+                VStack {
+                    Toggle(isOn: $showTimeDetails) {
+                        Text("Show Hours and Minutes")
+                    }
                     .padding()
-
-                Button("Calculate Difference") {
-                    calculateDifference()
-                }
-                .padding()
-
-                Text(timeMessage)
+                    
+                    Toggle(isOn: $showWeeksDetails) {
+                        Text("Show Weeks")
+                    }
                     .padding()
-            }
-            .navigationTitle("Day Dreamer")
-            .onReceive(timer) { input in
-                calculateDifference() // Update timeMessage every second
-            }
-        }
+                    
+                    DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: showTimeDetails ? [.date, .hourAndMinute] : [.date])
+                        .padding()
+                    
+                    Button("Calculate Difference") {
+                        calculateDifference()
+                    }
+                    .padding()
+                    
+                    Text(timeMessage)
+                        .padding()
+                }
+                    .navigationTitle("Day Dreamer")
+                    .onReceive(timer) { input in
+                        calculateDifference() // Update timeMessage every second
+                    }
+            )
     }
-
+    
     func calculateDifference() {
         let calendar = Calendar.current
         var currentDateAtMidnight = calendar.startOfDay(for: Date())
@@ -75,6 +77,6 @@ struct DayDreamerView: View {
 
 struct DayDreamerView_Previews: PreviewProvider {
     static var previews: some View {
-        DayDreamerView()
+        DayDreamerScreen()
     }
 }

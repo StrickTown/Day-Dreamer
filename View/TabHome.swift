@@ -32,7 +32,7 @@ struct TabHome: View {
                     /// Bug on iOS 16.4
                     // .toolbar(.hidden, for: .tabBar)
                 
-                DayDreamerView()
+                DayDreamerScreen()
                     .tag(Tab.add)
                     /// Hiding Native Tab Bar
                     /// Bug on iOS 16.4
