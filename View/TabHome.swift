@@ -26,7 +26,7 @@ struct TabHome: View {
                     /// Bug on iOS 16.4
                     // .toolbar(.hidden, for: .tabBar)
                 
-                Text("Data")
+                DataScreen()
                     .tag(Tab.data)
                     /// Hiding Native Tab Bar
                     /// Bug on iOS 16.4
@@ -38,13 +38,13 @@ struct TabHome: View {
                     /// Bug on iOS 16.4
                     // .toolbar(.hidden, for: .tabBar)
                 
-                Text("Wins")
+                WinsScreen()
                     .tag(Tab.wins)
                     /// Hiding Native Tab Bar
                     /// Bug on iOS 16.4
                     // .toolbar(.hidden, for: .tabBar)
                 
-                Text("Share")
+                ShareScreen()
                     .tag(Tab.share)
                     /// Hiding Native Tab Bar
                     /// Bug on iOS 16.4
