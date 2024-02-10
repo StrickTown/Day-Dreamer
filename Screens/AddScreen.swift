@@ -44,11 +44,11 @@ struct AddScreen: View {
                     .onReceive(timer) { _ in
                         calculateDifference() // Recalculate difference every second
                     }
-                
+                Text(timeMessage)
                 Spacer(minLength: 150)
                 
-                Text(timeMessage)
-                //                        .padding()
+                
+//                Spacer(minLength: 50)
                 
                 
             }
