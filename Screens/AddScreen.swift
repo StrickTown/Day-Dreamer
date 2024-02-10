@@ -29,6 +29,8 @@ struct AddScreen: View {
                     }
                     
                 }
+                .scrollContentBackground(.hidden)
+                .scrollDisabled(true)
                 
                 Button("Add Day", action: printConsole)
                     .frame(width: 350, height: 42, alignment: .center)
