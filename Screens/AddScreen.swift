@@ -10,32 +10,36 @@ struct AddScreen: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
-        VStack {
-            Toggle(isOn: $showTimeDetails) {
-                Text("Show Hours, Minutes, and Seconds")
-            }
-            .padding()
-            
-            Toggle(isOn: $showWeeksDetails) {
-                Text("Show Weeks")
-            }
-            .padding()
-            
-            DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
-                .padding()
-            
-            Button("Calculate Difference") {
-                calculateDifference()
-            }
-            .padding()
-            
-            Text(timeMessage)
-                .padding()
-        }
-        .onAppear(perform: calculateDifference)
-        .onReceive(timer) { _ in
-            calculateDifference() // Recalculate difference every second
-        }
+        Color("PrimaryBackground")
+            .edgesIgnoringSafeArea(.all)
+            .overlay(
+                VStack {
+                    Toggle(isOn: $showTimeDetails) {
+                        Text("Show Hours, Minutes, and Seconds")
+                    }
+                    .padding()
+                    
+                    Toggle(isOn: $showWeeksDetails) {
+                        Text("Show Weeks")
+                    }
+                    .padding()
+                    
+                    DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+                        .padding()
+                    
+                    Button("Calculate Difference") {
+                        calculateDifference()
+                    }
+                    .padding()
+                    
+                    Text(timeMessage)
+                        .padding()
+                }
+                .onAppear(perform: calculateDifference)
+                .onReceive(timer) { _ in
+                    calculateDifference() // Recalculate difference every second
+                }
+            )
     }
     
     func calculateDifference() {
