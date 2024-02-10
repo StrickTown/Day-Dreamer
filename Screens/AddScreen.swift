@@ -9,37 +9,55 @@ struct AddScreen: View {
     // Timer to update the view every second
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
+    
+    @State private var title = ""
+    
     var body: some View {
-        Color("PrimaryBackground")
-            .edgesIgnoringSafeArea(.all)
-            .overlay(
-                VStack {
-                    Toggle(isOn: $showTimeDetails) {
-                        Text("Show Hours, Minutes, and Seconds")
+        NavigationView {
+            VStack {
+                Form {
+                    Section(header: Text("Primary Information")) {
+                        TextField("Title", text: $title)
+                        DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
                     }
-                    .padding()
                     
-                    Toggle(isOn: $showWeeksDetails) {
-                        Text("Show Weeks")
+                    Section(header: Text("Details")) {
+                        Toggle("Show Hours, Minutes, and Seconds", isOn: $showTimeDetails)
+                            .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
+                        Toggle("Show Weeks", isOn: $showWeeksDetails)
+                            .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
                     }
-                    .padding()
                     
-                    DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
-                        .padding()
-                    
-                    Button("Calculate Difference") {
-                        calculateDifference()
-                    }
-                    .padding()
-                    
-                    Text(timeMessage)
-                        .padding()
                 }
-                .onAppear(perform: calculateDifference)
-                .onReceive(timer) { _ in
-                    calculateDifference() // Recalculate difference every second
-                }
-            )
+                
+                Button("Add Day", action: printConsole)
+                    .frame(width: 350, height: 42, alignment: .center)
+                    .foregroundColor(.white)
+                    .background(Color("Success"))
+                    .cornerRadius(8)
+                
+                
+                
+                    .onAppear(perform: calculateDifference)
+                    .onReceive(timer) { _ in
+                        calculateDifference() // Recalculate difference every second
+                    }
+                
+                Spacer(minLength: 150)
+                
+                Text(timeMessage)
+                //                        .padding()
+                
+                
+            }
+            .navigationTitle("Add Day")
+            .background(Color("PrimaryBackground"))
+        }
+               
+    }
+    
+    func printConsole() {
+        print("It works!")
     }
     
     func calculateDifference() {
