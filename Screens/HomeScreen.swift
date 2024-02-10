@@ -48,14 +48,14 @@ struct HomeScreen: View{
                     .ignoresSafeArea()
                 
                 Circle()
-                    .fill(Color("Purple"))
+                    .fill(Color("Primary"))
                     .padding(50)
                     .blur(radius: 120)
                 // Moving Top...
                     .offset(x: -size.width / 1.8, y: -size.height / 5)
                 
                 Circle()
-                    .fill(Color("LightBlue"))
+                    .fill(Color("Secondary"))
                     .padding(50)
                     .blur(radius: 150)
                 // Moving Top...
@@ -63,7 +63,7 @@ struct HomeScreen: View{
                 
                 
                 Circle()
-                    .fill(Color("LightBlue"))
+                    .fill(Color("Primary"))
                     .padding(50)
                     .blur(radius: 90)
                 // Moving Top...
@@ -72,14 +72,14 @@ struct HomeScreen: View{
                 // Adding Purple on both botom ends...
                 
                 Circle()
-                    .fill(Color("Purple"))
+                    .fill(Color("Secondary"))
                     .padding(100)
                     .blur(radius: 110)
                 // Moving Top...
                     .offset(x: size.width / 1.8, y: size.height / 2)
                 
                 Circle()
-                    .fill(Color("Purple"))
+                    .fill(Color("Primary"))
                     .padding(100)
                     .blur(radius: 110)
                 // Moving Top...
