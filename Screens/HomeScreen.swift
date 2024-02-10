@@ -32,8 +32,8 @@ struct HomeScreen: View{
             
             LinearGradient(
                 colors: [Color("Primary"),Color("Secondary")],
-                startPoint: .top,
-                endPoint: .bottom)
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing)
                 .ignoresSafeArea()
             
             // Gloss Background....
@@ -94,20 +94,6 @@ struct HomeScreen: View{
                 // GlassMorphism Card...
                 
                 ZStack{
-                    
-                    
-                    // Bacground Balls...
-                    Circle()
-                        .fill(Color("Purple"))
-                        .blur(radius: 20)
-                        .frame(width: 100, height: 100)
-                        .offset(x: 120, y: -80)
-                    
-                    Circle()
-                        .fill(Color("LightBlue"))
-                        .blur(radius: 40)
-                        .frame(width: 100, height: 100)
-                        .offset(x: -120, y: 100)
                     
                     ScrollView(showsIndicators: false) { // Enables scrolling
                         VStack(spacing: 20) { // Vertically arranges your cards with spacing
