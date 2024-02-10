@@ -10,9 +10,6 @@ import SwiftUI
 struct DayDreamCard: View{
     
     var body: some View{
-        
-        let width = UIScreen.main.bounds.width
-        
         ZStack{
             
             RoundedRectangle(cornerRadius: 25)
