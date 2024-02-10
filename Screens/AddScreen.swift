@@ -14,52 +14,64 @@ struct AddScreen: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Form {
-                    Section(header: Text("Primary Information")) {
-                        TextField("Title", text: $title)
-                        DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+            ScrollView {
+                VStack {
+                    Form {
+                        Section(header: Text("Primary Information")) {
+                            TextField("Title", text: $title)
+                            DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+                        }
+                        
+                        Section(header: Text("Details")) {
+                            Toggle("Show Hours, Minutes, and Seconds", isOn: $showTimeDetails)
+                                .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
+                            Toggle("Show Weeks", isOn: $showWeeksDetails)
+                                .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
+                        }
+                        
                     }
+                    .frame(height: 400)
+                    .scrollContentBackground(.hidden)
+                    .scrollDisabled(true)
                     
-                    Section(header: Text("Details")) {
-                        Toggle("Show Hours, Minutes, and Seconds", isOn: $showTimeDetails)
-                            .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
-                        Toggle("Show Weeks", isOn: $showWeeksDetails)
-                            .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
-                    }
+                    Button("Add Day", action: printConsole)
+                        .frame(width: 350, height: 42, alignment: .center)
+                        .foregroundColor(.white)
+                        .background(Color("Success"))
+                        .cornerRadius(8)
+                    
+                    
+                    
+                        .onAppear(perform: calculateDifference)
+                        .onReceive(timer) { _ in
+                            calculateDifference() // Recalculate difference every second
+                        }
+                    Text(timeMessage)
+                    Spacer(minLength: 150)
+                    
+                    
+                    //                Spacer(minLength: 50)
+                    
                     
                 }
-                .scrollContentBackground(.hidden)
-                .scrollDisabled(true)
-                
-                Button("Add Day", action: printConsole)
-                    .frame(width: 350, height: 42, alignment: .center)
-                    .foregroundColor(.white)
-                    .background(Color("Success"))
-                    .cornerRadius(8)
-                
-                
-                
-                    .onAppear(perform: calculateDifference)
-                    .onReceive(timer) { _ in
-                        calculateDifference() // Recalculate difference every second
-                    }
-                Text(timeMessage)
-                Spacer(minLength: 150)
-                
-                
-//                Spacer(minLength: 50)
-                
-                
+                .navigationTitle("Add Day")
+                .background(Color("PrimaryBackground"))
+                .onTapGesture {
+                    hideKeyboard()
+                }
             }
-            .navigationTitle("Add Day")
+            .scrollDisabled(true)
             .background(Color("PrimaryBackground"))
         }
-               
+        
     }
     
     func printConsole() {
         print("It works!")
+    }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     func calculateDifference() {
