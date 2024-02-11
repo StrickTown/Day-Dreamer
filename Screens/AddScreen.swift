@@ -13,31 +13,125 @@ struct AddScreen: View {
     @State private var title = ""
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack {
-                    Form {
-                        Section(header: Text("Primary Information")) {
-                            TextField("Title", text: $title)
-                            DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
-                        }
+        
+        ZStack {
+            LinearGradient(
+                colors: [Color("Secondary"),Color("Primary")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+            
+            // Gloss Background....
+            GeometryReader{proxy in
+                
+                let size = proxy.size
+                
+                // Slighlty Darkening ...
+                Color.black
+                    .opacity(0.7)
+                    .blur(radius: 200)
+                    .ignoresSafeArea()
+                
+                Circle()
+                    .fill(Color("Accent"))
+                    .padding(50)
+                    .blur(radius: 120)
+                // Moving Top...
+                    .offset(x: -size.width / 1.8, y: -size.height / 5)
+                
+                Circle()
+                    .fill(Color("Primary"))
+                    .padding(50)
+                    .blur(radius: 150)
+                // Moving Top...
+                    .offset(x: size.width / 1.8, y: -size.height / 2)
+                
+                
+                Circle()
+                    .fill(Color("Secondary"))
+                    .padding(50)
+                    .blur(radius: 90)
+                // Moving Top...
+                    .offset(x: size.width / 1.8, y: size.height / 2)
+                
+                // Adding Purple on both botom ends...
+                
+                Circle()
+                    .fill(Color("Accent"))
+                    .padding(100)
+                    .blur(radius: 110)
+                // Moving Top...
+                    .offset(x: size.width / 1.8, y: size.height / 2)
+                
+                Circle()
+                    .fill(Color("Secondary"))
+                    .padding(100)
+                    .blur(radius: 110)
+                // Moving Top...
+                    .offset(x: -size.width / 1.8, y: size.height / 2)
+            }
+                VStack(spacing: 10) {
+                    //                    .scrollContentBackground(.hidden)
+                    //                    .scrollDisabled(true)
+                    Text("Add Day")
+                        .font(.system(size: 50))
+                        .fontWeight(.bold)
                         
-                        Section(header: Text("Details")) {
-                            Toggle("Show Hours, Minutes, and Seconds", isOn: $showTimeDetails)
-                                .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
-                            Toggle("Show Weeks", isOn: $showWeeksDetails)
-                                .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
-                        }
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white) // Set the background color of the RoundedRectangle
+                            .opacity(0.2)
+                            .frame(width: 390, height: 150)
                         
+                        VStack {
+                            HStack {
+                                Text("Title")
+                                    .font(.headline)
+                                    .padding(.leading, 20)
+                                Spacer()
+                                TextField("Title Name", text: $title)
+                                    .frame(width: 260, height: 30)
+                            }
+                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 30))
+                            
+                            HStack {
+                                DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+                                    .padding()
+                            }
+                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 15))
+                        }
                     }
-                    .frame(height: 400)
-                    .scrollContentBackground(.hidden)
-                    .scrollDisabled(true)
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white) // Set the background color of the RoundedRectangle
+                            .opacity(0.2)
+                            .frame(width: 390, height: 150)
+                        
+                        VStack {
+                            HStack {
+                                Toggle("Show Hours, Minutes, and Seconds", isOn: $showTimeDetails)
+                                    .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
+                            }
+                            .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30))
+                            
+                            HStack {
+                                Toggle("Show Weeks", isOn: $showWeeksDetails)
+                                    .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
+                            }
+                            .padding(EdgeInsets(top: 10, leading: 30, bottom: 0, trailing: 30))
+                            
+                        }
+                    }
+                    .padding(.bottom, 80)
+                    
                     
                     Button("Add Day", action: printConsole)
                         .frame(width: 350, height: 42, alignment: .center)
                         .foregroundColor(.white)
-                        .background(Color("Success"))
+                        .background(Color("Primary"))
+                        .border(Color.gray, width: 2)
                         .cornerRadius(8)
                     
                     
@@ -47,22 +141,20 @@ struct AddScreen: View {
                             calculateDifference() // Recalculate difference every second
                         }
                     Text(timeMessage)
-                    Spacer(minLength: 150)
+                    //                    Spacer(minLength: 150)
                     
                     
                     //                Spacer(minLength: 50)
                     
                     
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
                 .navigationTitle("Add Day")
-                .background(Color("PrimaryBackground"))
-                .onTapGesture {
-                    hideKeyboard()
-                }
-            }
-            .scrollDisabled(true)
-            .background(Color("PrimaryBackground"))
+                .background(Color.clear)
+            
         }
+        
         
     }
     
