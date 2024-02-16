@@ -5,168 +5,127 @@ struct AddScreen: View {
     @State private var timeMessage: String = "" // To display the countdown or time since
     @State private var showTimeDetails: Bool = false // Toggle state for showing or hiding time details
     @State private var showWeeksDetails: Bool = false // Toggle state for showing or hiding week details
+    @State private var title: String = ""
     
     // Timer to update the view every second
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    
-    @State private var title = ""
-    
     var body: some View {
-        
         ZStack {
-            LinearGradient(
-                colors: [Color("Secondary"),Color("Primary")],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing)
+            backgroundGradient
                 .ignoresSafeArea()
             
-            // Gloss Background....
-            GeometryReader{proxy in
-                
-                let size = proxy.size
-                
-                // Slighlty Darkening ...
-                Color.black
-                    .opacity(0.7)
-                    .blur(radius: 200)
-                    .ignoresSafeArea()
-                
-                Circle()
-                    .fill(Color("Accent"))
-                    .padding(50)
-                    .blur(radius: 120)
-                // Moving Top...
-                    .offset(x: -size.width / 1.8, y: -size.height / 5)
-                
-                Circle()
-                    .fill(Color("Primary"))
-                    .padding(50)
-                    .blur(radius: 150)
-                // Moving Top...
-                    .offset(x: size.width / 1.8, y: -size.height / 2)
-                
-                
-                Circle()
-                    .fill(Color("Secondary"))
-                    .padding(50)
-                    .blur(radius: 90)
-                // Moving Top...
-                    .offset(x: size.width / 1.8, y: size.height / 2)
-                
-                // Adding Purple on both botom ends...
-                
-                Circle()
-                    .fill(Color("Accent"))
-                    .padding(100)
-                    .blur(radius: 110)
-                // Moving Top...
-                    .offset(x: size.width / 1.8, y: size.height / 2)
-                
-                Circle()
-                    .fill(Color("Secondary"))
-                    .padding(100)
-                    .blur(radius: 110)
-                // Moving Top...
-                    .offset(x: -size.width / 1.8, y: size.height / 2)
-            }
-                VStack(spacing: 10) {
-                    //                    .scrollContentBackground(.hidden)
-                    //                    .scrollDisabled(true)
+            ScrollView {
+                VStack(spacing: 20) {
                     Text("Add Day")
-                        .font(.system(size: 50))
+                        .font(.largeTitle)
                         .fontWeight(.bold)
-                        
+                    Spacer(minLength: 0)
                     
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white) // Set the background color of the RoundedRectangle
-                            .opacity(0.2)
-                            .frame(width: 390, height: 150)
-                        
-                        VStack {
-                            HStack {
-                                Text("Title")
-                                    .font(.headline)
-                                    .padding(.leading, 20)
-                                Spacer()
-                                TextField("Title Name", text: $title)
-                                    .frame(width: 260, height: 30)
-                            }
-                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 30))
-                            
-                            HStack {
-                                DatePicker("Select Date and Time", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
-                                    .padding()
-                            }
-                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 15))
-                        }
-                    }
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white) // Set the background color of the RoundedRectangle
-                            .opacity(0.2)
-                            .frame(width: 390, height: 150)
-                        
-                        VStack {
-                            HStack {
-                                Toggle("Show Hours, Minutes, and Seconds", isOn: $showTimeDetails)
-                                    .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
-                            }
-                            .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30))
-                            
-                            HStack {
-                                Toggle("Show Weeks", isOn: $showWeeksDetails)
-                                    .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
-                            }
-                            .padding(EdgeInsets(top: 10, leading: 30, bottom: 0, trailing: 30))
-                            
-                        }
-                    }
-                    .padding(.bottom, 80)
-                    
+                    inputFieldsSection
+                        .padding(.horizontal)
                     
                     Button("Add Day", action: printConsole)
-                        .frame(width: 350, height: 42, alignment: .center)
-                        .foregroundColor(.white)
-                        .background(Color("Primary"))
-                        .border(Color.gray, width: 2)
-                        .cornerRadius(8)
+                        .buttonStyle(PrimaryButtonStyle())
                     
-                    
-                    
-                        .onAppear(perform: calculateDifference)
-                        .onReceive(timer) { _ in
-                            calculateDifference() // Recalculate difference every second
-                        }
                     Text(timeMessage)
-                    //                    Spacer(minLength: 150)
-                    
-                    
-                    //                Spacer(minLength: 50)
-                    
-                    
+                        .padding()
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.all)
-                .navigationTitle("Add Day")
-                .background(Color.clear)
-            
+                .frame(maxWidth: .infinity)
+                .padding()
+            }
         }
-        
-        
+        .onAppear(perform: calculateDifference)
+        .onReceive(timer) { _ in calculateDifference() }
+    }
+    
+    private var backgroundGradient: some View {
+        LinearGradient(
+            colors: [Color("Secondary"), Color("Primary")],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+    
+    private var inputFieldsSection: some View {
+        Group {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white.opacity(0.2))
+                
+                VStack {
+                    VStack(alignment: .leading) {
+                        Text("Title")
+                            .font(.headline)
+//                            .padding(.leading)
+//                        Spacer()
+                        TextField("Title Name", text: $title)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.trailing)
+                    }
+                    .padding()
+                    
+                    VStack(alignment: .leading) { // Align VStack contents to the leading edge
+                        HStack {
+                            Text("Select Date and Time")
+                                .font(.headline) // Customize the font as needed
+                                .padding(.leading) // Add padding to the leading edge to align with the DatePicker
+                            Spacer() // Pushes the Text to the left
+                        } // HStack ensures the text is aligned left and allows the use of Spacer
+                        Spacer(minLength: /*@START_MENU_TOKEN@*/0/*@END_MENU_TOKEN@*/)
+                        DatePicker("", selection: $selectedDate, displayedComponents: [.date, .hourAndMinute])
+                            .labelsHidden() // Hide the built-in label
+                            .padding() // Adjust padding as necessary
+                    }
+//                    .padding() // Add padding around the VStack if needed for overall alignment
+
+                }
+//                .padding(.horizontal)
+            }
+            .frame(height: 150)
+            
+            Spacer(minLength: 20)
+            
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white.opacity(0.2))
+
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Show Hours, Minutes, and Seconds")
+                            .font(.headline) // Set font to .headline
+                            .foregroundColor(.primary) // Set text color
+                            .padding(.leading)
+                        Spacer() // Pushes the Text to the left
+                        Toggle("", isOn: $showTimeDetails)
+                            .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
+                    }
+                    .padding(.vertical, 8) // Adjust padding as necessary
+
+                    HStack {
+                        Text("Show Weeks")
+                            .font(.headline) // Set font to .headline
+                            .foregroundColor(.primary) // Set text color
+                            .padding(.leading)
+                        Spacer() // Pushes the Text to the left
+                        Toggle("", isOn: $showWeeksDetails)
+                            .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
+                    }
+                    .padding(.vertical, 8) // Adjust padding as necessary
+                }
+                .padding(.trailing, 20)
+            }
+            .frame(height: 150)
+
+        }
     }
     
     func printConsole() {
-        print("It works!")
-    }
-    
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        print("Button tapped!")
     }
     
     func calculateDifference() {
+        // Time calculation logic remains the same
         let calendar = Calendar.current
         let now = Date()
         var components: Set<Calendar.Component> = [.year, .month, .day]
@@ -182,30 +141,31 @@ struct AddScreen: View {
         
         var message = selectedDate > now ? "Time until event: " : "Time since event: "
         
-        // Construct message
         if let year = difference.year, year != 0 { message += "\(abs(year)) years, " }
         if let month = difference.month, month != 0 { message += "\(abs(month)) months, " }
-        if let week = difference.weekOfYear, showWeeksDetails { message += "\(abs(week)) weeks, " }
-        
-        if let day = difference.day {
-            if showWeeksDetails {
-                let daysWithoutWeeks = abs(day) % 7
-                message += "\(daysWithoutWeeks) days, "
-            } else {
-                message += "\(abs(day)) days, "
-            }
-        }
-        
+        if let weekOfYear = difference.weekOfYear, weekOfYear != 0 && showWeeksDetails { message += "\(abs(weekOfYear)) weeks, " }
+        if let day = difference.day, day != 0 { message += "\(abs(day)) days, " }
         if showTimeDetails {
             if let hour = difference.hour { message += "\(abs(hour)) hours, " }
             if let minute = difference.minute { message += "\(abs(minute)) minutes, " }
             if let second = difference.second { message += "\(abs(second)) seconds, " }
         }
         
-        // Remove trailing comma and space
-        message = String(message.dropLast(2))
+        message = String(message.dropLast(2)) // Remove the last comma and space
         
         timeMessage = message
+    }
+}
+
+// Example button style
+struct PrimaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .foregroundColor(.white)
+            .padding()
+            .background(Color("Primary"))
+            .cornerRadius(8)
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }
 }
 
