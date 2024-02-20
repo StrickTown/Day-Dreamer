@@ -35,8 +35,8 @@ struct AddScreen: View {
                 .padding()
             }
         }
-        .onAppear(perform: calculateDifference)
-        .onReceive(timer) { _ in calculateDifference() }
+//        .onAppear(perform: calculateDifference)
+//        .onReceive(timer) { _ in calculateDifference() }
     }
     
     private var backgroundGradient: some View {
@@ -121,6 +121,7 @@ struct AddScreen: View {
     }
     
     func printConsole() {
+        calculateDifference()
         print("Button tapped!")
     }
     
