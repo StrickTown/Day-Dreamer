@@ -35,8 +35,8 @@ struct AddScreen: View {
                 .padding()
             }
         }
-//        .onAppear(perform: calculateDifference)
-//        .onReceive(timer) { _ in calculateDifference() }
+        //        .onAppear(perform: calculateDifference)
+        //        .onReceive(timer) { _ in calculateDifference() }
     }
     
     private var backgroundGradient: some View {
@@ -53,17 +53,30 @@ struct AddScreen: View {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.white.opacity(0.2))
                 
-                VStack {
-                    VStack(alignment: .leading) {
-                        Text("Title")
-                            .font(.headline)
-//                            .padding(.leading)
-//                        Spacer()
-                        TextField("Title Name", text: $title)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.trailing)
+                VStack(alignment: .leading) {
+                    Text("Title")
+                        .font(.headline)
+                        .padding(.leading, 15)
+                        .padding(.top, 15)
+                    ZStack(alignment: .leading) {
+                        if title.isEmpty {
+                                Text("Title Name")
+                                .foregroundColor(.gray.opacity(0.7)) // Placeholder color when empty
+                                    .padding(.leading, 5) // Adjust padding to match TextField's text position
+                            }
+                        //                            .padding(.leading)
+                        //                        Spacer()
+                        TextField("", text: $title)
+//                            .textFieldStyle(RoundedBorderTextFieldStyle())
+//                            .padding(.trailing)
+                            .padding()
+                            .background(Color.white.opacity(0.2))
+                            .cornerRadius(5)
+                            .foregroundColor(title.isEmpty ? .black : .black)
                     }
-                    .padding()
+                    .padding(.leading, 15)
+                    .padding(.trailing, 15)
+                    .padding(.bottom, 15)
                     
                     VStack(alignment: .leading) { // Align VStack contents to the leading edge
                         HStack {
@@ -77,10 +90,10 @@ struct AddScreen: View {
                             .labelsHidden() // Hide the built-in label
                             .padding() // Adjust padding as necessary
                     }
-//                    .padding() // Add padding around the VStack if needed for overall alignment
-
+                    //                    .padding() // Add padding around the VStack if needed for overall alignment
+                    
                 }
-//                .padding(.horizontal)
+                //                .padding(.horizontal)
             }
             .frame(height: 150)
             
@@ -89,7 +102,7 @@ struct AddScreen: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.white.opacity(0.2))
-
+                
                 VStack(alignment: .leading) {
                     HStack {
                         Text("Show Hours, Minutes, and Seconds")
@@ -101,7 +114,7 @@ struct AddScreen: View {
                             .toggleStyle(SwitchToggleStyle(tint: Color("Success")))
                     }
                     .padding(.vertical, 8) // Adjust padding as necessary
-
+                    
                     HStack {
                         Text("Show Weeks")
                             .font(.headline) // Set font to .headline
@@ -116,7 +129,7 @@ struct AddScreen: View {
                 .padding(.trailing, 20)
             }
             .frame(height: 150)
-
+            
         }
     }
     
