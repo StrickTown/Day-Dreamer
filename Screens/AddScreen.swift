@@ -51,7 +51,7 @@ struct AddScreen: View {
         Group {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white.opacity(0.2))
+                    .fill(Color.gray.opacity(0.5))
                 
                 VStack(alignment: .leading) {
                     Text("Title")
@@ -61,7 +61,7 @@ struct AddScreen: View {
                     ZStack(alignment: .leading) {
                         if title.isEmpty {
                                 Text("Title Name")
-                                .foregroundColor(.gray.opacity(0.7)) // Placeholder color when empty
+                                .foregroundColor(.white.opacity(0.6)) // Placeholder color when empty
                                     .padding(.leading, 5) // Adjust padding to match TextField's text position
                             }
                         //                            .padding(.leading)
@@ -101,7 +101,7 @@ struct AddScreen: View {
             
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.white.opacity(0.2))
+                    .fill(Color.gray.opacity(0.5))
                 
                 VStack(alignment: .leading) {
                     HStack {
