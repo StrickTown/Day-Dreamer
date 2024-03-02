@@ -6,6 +6,8 @@ struct AddScreen: View {
     @State private var showTimeDetails: Bool = false // Toggle state for showing or hiding time details
     @State private var showWeeksDetails: Bool = false // Toggle state for showing or hiding week details
     @State private var title: String = ""
+    @FocusState private var titleIsFocused: Bool
+
     
     // Timer to update the view every second
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -59,24 +61,20 @@ struct AddScreen: View {
                         .padding(.leading, 15)
                         .padding(.top, 15)
                     ZStack(alignment: .leading) {
-                        if title.isEmpty {
-                                Text("Title Name")
-                                .foregroundColor(.white.opacity(0.6)) // Placeholder color when empty
-                                    .padding(.leading, 5) // Adjust padding to match TextField's text position
-                            }
-                        //                            .padding(.leading)
-                        //                        Spacer()
+                        if title.isEmpty && !titleIsFocused {
+                            Text("Title Name")
+                                .foregroundColor(.white.opacity(0.6))
+                                .padding(.leading, 5) // Ensure this matches the TextField's leading padding
+                        }
                         TextField("", text: $title)
-//                            .textFieldStyle(RoundedBorderTextFieldStyle())
-//                            .padding(.trailing)
+                            .focused($titleIsFocused)
                             .padding()
-                            .background(Color.white.opacity(0.2))
+                            .background(Color.white.opacity(0.1))
                             .cornerRadius(5)
-                            .foregroundColor(title.isEmpty ? .black : .black)
+                            .foregroundColor(.black)
                     }
-                    .padding(.leading, 15)
-                    .padding(.trailing, 15)
                     .padding(.bottom, 15)
+                    .padding(.horizontal, 15)
                     
                     VStack(alignment: .leading) { // Align VStack contents to the leading edge
                         HStack {
