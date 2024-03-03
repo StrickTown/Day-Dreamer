@@ -29,11 +29,11 @@ struct DayDreamCard: View{
                         
                             .linearGradient(.init(colors: [
                             
-                                Color("Primary"),
+                                Color("Primary_One"),
                                 Color.purple.opacity(0.5),
                                 .clear,
                                 .clear,
-                                Color("Secondary"),
+                                Color("Secondary_One"),
                             ]), startPoint: .topLeading, endPoint: .bottomTrailing)
                             ,lineWidth: 2.5
                         )

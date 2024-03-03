@@ -43,7 +43,7 @@ struct AddScreen: View {
     
     private var backgroundGradient: some View {
         LinearGradient(
-            colors: [Color("Secondary"), Color("Primary")],
+            colors: [Color("Secondary_One"), Color("Primary_One")],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
@@ -175,7 +175,7 @@ struct PrimaryButtonStyle: ButtonStyle {
         configuration.label
             .foregroundColor(.white)
             .padding()
-            .background(Color("Primary"))
+            .background(Color("Primary_One"))
             .cornerRadius(8)
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }

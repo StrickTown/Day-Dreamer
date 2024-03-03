@@ -31,7 +31,7 @@ struct HomeScreen: View{
         ZStack{
             
             LinearGradient(
-                colors: [Color("Primary"),Color("Secondary")],
+                colors: [Color("Primary_One"),Color("Secondary_One")],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing)
                 .ignoresSafeArea()
@@ -48,14 +48,14 @@ struct HomeScreen: View{
                     .ignoresSafeArea()
                 
                 Circle()
-                    .fill(Color("Primary"))
+                    .fill(Color("Primary_One"))
                     .padding(50)
                     .blur(radius: 120)
                 // Moving Top...
                     .offset(x: -size.width / 1.8, y: -size.height / 5)
                 
                 Circle()
-                    .fill(Color("Secondary"))
+                    .fill(Color("Secondary_One"))
                     .padding(50)
                     .blur(radius: 150)
                 // Moving Top...
@@ -63,7 +63,7 @@ struct HomeScreen: View{
                 
                 
                 Circle()
-                    .fill(Color("Primary"))
+                    .fill(Color("Primary_One"))
                     .padding(50)
                     .blur(radius: 90)
                 // Moving Top...
@@ -72,14 +72,14 @@ struct HomeScreen: View{
                 // Adding Purple on both botom ends...
                 
                 Circle()
-                    .fill(Color("Secondary"))
+                    .fill(Color("Secondary_One"))
                     .padding(100)
                     .blur(radius: 110)
                 // Moving Top...
                     .offset(x: size.width / 1.8, y: size.height / 2)
                 
                 Circle()
-                    .fill(Color("Primary"))
+                    .fill(Color("Primary_One"))
                     .padding(100)
                     .blur(radius: 110)
                 // Moving Top...
