@@ -53,7 +53,7 @@ struct AddScreen: View {
         Group {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.gray.opacity(0.5))
+                    .fill(Color.gray.opacity(0.8))
                 
                 VStack(alignment: .leading) {
                     Text("Title")
@@ -99,7 +99,7 @@ struct AddScreen: View {
             
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.gray.opacity(0.5))
+                    .fill(Color.gray.opacity(0.8))
                 
                 VStack(alignment: .leading) {
                     HStack {
@@ -175,7 +175,7 @@ struct PrimaryButtonStyle: ButtonStyle {
         configuration.label
             .foregroundColor(.white)
             .padding()
-            .background(Color("Primary_One"))
+            .background(Color("Success"))
             .cornerRadius(8)
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }
